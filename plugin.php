@@ -47,17 +47,17 @@ function bbp_permalinks_post_type_link_pretty( $link, $post = 0 ) {
 		$parent = bbp_get_forum_parent_id($post->ID);
 		if($parent == 0) {
 			return home_url(
-				user_trailingslashit( 'forums/' .$post->post_name .'-f'.$post->ID)
+				user_trailingslashit( 'forum/' .$post->post_name )
 			);
 		} else {
 			$parents = bbp_get_forum_ancestors($post->ID);
 			asort($parents);
-			$url = 'forums/';
+			$url = 'forum/';
 			foreach($parents as $parent) {
 				$add = bbp_get_forum($parent);
 				$url .= $add->post_name.'/';
 			}
-			$url .= $post->post_name.'-f'.$post->ID;
+			$url .= $post->post_name;
 			return home_url(
 				user_trailingslashit($url)
 			);
@@ -70,16 +70,12 @@ function bbp_permalinks_post_type_link_pretty( $link, $post = 0 ) {
 		$parentofparent = bbp_get_forum_parent_id($parent->ID);
 		if($parentofparent == 0) {
 			return home_url(
-				user_trailingslashit( 'forums/'.$parent->post_name.'/' .$post->ID .'-'.$post->post_name)
+				user_trailingslashit( 'forum/'.$parent->post_name.'/' .$post->ID .'-'.$post->post_name)
 			);
 		} else {
 			$parents = bbp_get_forum_ancestors($parent->ID);
 			asort($parents);
-			$url = 'forums/';
-			foreach($parents as $parent1) {
-				$add = bbp_get_forum($parent1);
-				$url .= $add->post_name.'/';
-			}
+			$url = 'forum/';
 			$url .= $parent->post_name.'/';
 			$url .= $post->ID .'-'.$post->post_name;
 			return home_url(
@@ -98,7 +94,7 @@ function bbp_permalinks_post_type_link_pretty( $link, $post = 0 ) {
 		$parents = bbp_get_forum_ancestors($forum);
 		//var_dump($parents);
 		asort($parents);
-		$url = 'forums/';
+		$url = 'forum/';
 		foreach($parents as $parent1) {
 			$add = bbp_get_forum($parent1);
 			$url .= $add->post_name.'/';
@@ -168,19 +164,19 @@ function bbp_permalinks_rewrites_init() {
 	 * forums/forum/ID/edit/
 	 */
 	add_rewrite_rule(
-		'forums\/[\s\S]+\-f([0-9]+)\/edit/?$',
+		'forum\/[\s\S]+\-f([0-9]+)\/edit/?$',
 		'index.php?post_type=' . bbp_get_forum_post_type() . '&p=$matches[1]&' . $edit_id . '=1',
 		$priority
 	);
 	// forums/topic/ID/edit/
 	add_rewrite_rule(
-		'forums\/[\s\S]+\/([0-9]+)\-[\s\S]+\/edit/?$',
+		'forum\/[\s\S]+\/([0-9]+)\-[\s\S]+\/edit/?$',
 		'index.php?post_type=' . bbp_get_topic_post_type() . '&p=$matches[1]&' . $edit_id . '=1',
 		$priority
 	);
 	// forums/reply/ID/edit/
 	add_rewrite_rule(
-		'forums\/[\s\S]+\/([0-9]+)\/edit/?$',
+		'forum\/[\s\S]+\/([0-9]+)\/edit/?$',
 		'index.php?post_type=' . bbp_get_reply_post_type() . '&p=$matches[1]&' . $edit_id . '=1',
 		$priority
 	);
@@ -190,13 +186,13 @@ function bbp_permalinks_rewrites_init() {
 	 * /forums/forum/ID/page/2
 	 */
 	add_rewrite_rule(
-		'forums\/[\s\S]+\-f([0-9]+)\/page\/([0-9]+)/?$',
+		'forum\/[\s\S]+\-f([0-9]+)\/page\/([0-9]+)/?$',
 		'index.php?post_type=' . bbp_get_forum_post_type() . '&p=$matches[1]&' . $paged_id .'=$matches[2]',
 		$priority
 	);
 	// /forums/forum/ID/
 	add_rewrite_rule(
-		'forums\/[\s\S]+\-f([0-9]+)/?$',
+		'forum\/[\s\S]+\-f([0-9]+)/?$',
 		'index.php?post_type=' . bbp_get_forum_post_type() . '&p=$matches[1]',
 		$priority
 	);
@@ -206,13 +202,13 @@ function bbp_permalinks_rewrites_init() {
 	 * /forums/topic/ID/page/2/
 	 */
 	add_rewrite_rule(
-		'forums\/[\s\S]+\/([0-9]+)\-[\s\S]+\/page\/([0-9]+)/?$',
+		'forum\/[\s\S]+\/([0-9]+)\-[\s\S]+\/page\/([0-9]+)/?$',
 		'index.php?post_type=' . bbp_get_topic_post_type() . '&p=$matches[1]&' . $paged_id . '=$matches[2]',
 		$priority
 	);
 	// /forums/topic/ID/
 	add_rewrite_rule(
-		'forums\/[\s\S]+\/([0-9]+)\-[\s\S]+/?$',
+		'forum\/[\s\S]+\/([0-9]+)\-[\s\S]+/?$',
 		'index.php?post_type=' . bbp_get_topic_post_type() .'&p=$matches[1]',
 		$priority
 	);
